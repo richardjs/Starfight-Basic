@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+	<head>
+		<style>
+			body{
+				background: #223;
+			}
+			canvas{
+				background: black;
+				display: block;
+				margin: 30px auto;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="800", height="500"></canvas>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="js/ship.js"></script>
+		<script src="js/game.js"></script>
+		<script src="js/client.js"></script>
+		<script>
+			var client = new client.Client();
+		</script>
+	</body>
+</html>
