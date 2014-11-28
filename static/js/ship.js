@@ -2,7 +2,8 @@
 
 (function(exports){
 
-var ACCELERATION = 15;
+var ACCELERATION = 5;
+var MAX_SPEED = 500;
 var TURN_SPEED = Math.PI*2;
 var WRAP_MARGIN = 30;
 
@@ -26,6 +27,17 @@ Ship.prototype.update = function(delta, controller){
 	if(controller.accelerate){
 		this.dx += Math.cos(this.angle) * ACCELERATION;
 		this.dy += Math.sin(this.angle) * ACCELERATION;
+
+		if(this.dx > MAX_SPEED){
+			this.dx = MAX_SPEED;
+		}else if(this.dx < -MAX_SPEED){
+			this.dx = -MAX_SPEED;
+		}
+		if(this.dy > MAX_SPEED){
+			this.dy = MAX_SPEED;
+		}else if(this.dy < -MAX_SPEED){
+			this.dy = -MAX_SPEED;
+		}
 	}
 
 	this.x += this.dx*delta / 1000;
