@@ -28,6 +28,46 @@ function Client(){
 				new ship.Ship(serverShip.x, serverShip.y)
 			);
 		});
+		client.game.controllers = [];
+		game.controllers.forEach(function(serverController){
+			client.game.controllers.push(
+				serverController
+			);
+		});
+	});
+
+	document.addEventListener('keydown', function(event){
+		switch(event.keyCode){
+			case 38:
+				client.game.controllers[client.id]['accelerate'] = true;
+				console.log(client.game.controllers[client.id]);
+				break;
+			case 37:
+				client.game.controllers[client.id]['turnLeft'] = true;
+				break;
+			case 39:
+				client.game.controllers[client.id]['turnRight'] = true;
+				break;
+			default:
+				return;
+		}
+		client.socket.emit('controller update', client.game.controllers[client.id]);
+	});
+	document.addEventListener('keyup', function(event){
+		switch(event.keyCode){
+			case 38:
+				client.game.controllers[client.id]['accelerate'] = false;
+				break;
+			case 37:
+				client.game.controllers[client.id]['turnLeft'] = false;
+				break;
+			case 39:
+				client.game.controllers[client.id]['turnRight'] = false;
+				break;
+			default:
+				return;
+		}
+		client.socket.emit('controller update', client.game.controllers[client.id]);
 	});
 
 	var lastTime = 0;

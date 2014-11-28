@@ -11,13 +11,14 @@ if(typeof require === 'function'){
 
 function Game(){
 	this.ships = [];
+	this.controllers = [];
 }
 
 
 Game.prototype.update = function(delta){
-	this.ships.forEach(function(ship){
-		ship.update(delta);
-	});
+	for(var i = 0; i < this.ships.length; i++){
+		this.ships[i].update(delta, this.controllers[i]);
+	}
 }
 
 

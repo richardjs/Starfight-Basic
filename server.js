@@ -16,16 +16,25 @@ var sockets = [];
 io.on('connection', function(socket){
 	var address = socket.handshake.address;;
 	console.log('connection from ' + address);
+	
+	var id = sockets.length;
+	socket.emit('set id', id);
+	sockets.push(socket);
+
 	socket.on('disconnect', function(){
 		console.log('disconnect from ' + address);
 
 		var id = sockets.indexOf(socket);
 		sockets.splice(id, 1)
 		game.ships.splice(id, 1);
+		game.controllers.splice(id, 1);
 	});
 
-	socket.emit('set id', sockets.length);
-	sockets.push(socket);
+	socket.on('controller update', function(controller){
+		game.controllers[id] = controller;
+	});
+
+	// TODO: need to account for sockets disconnecting
 
 	game.ships.push(
 		new Ship(
@@ -33,6 +42,7 @@ io.on('connection', function(socket){
 			Math.random() * 400
 		)
 	);
+	game.controllers.push({});
 });
 
 
