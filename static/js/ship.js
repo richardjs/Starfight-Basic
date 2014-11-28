@@ -12,7 +12,7 @@ function Ship(x, y, dx, dy, angle, speed){
 	this.y = y;
 	this.dx = dx || 0;
 	this.dy = dy || 0;
-	this.angle = angle || 0;
+	this.angle = angle || Math.random() * Math.PI*2;
 	this.speed = speed || 0;
 }
 
