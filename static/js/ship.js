@@ -4,6 +4,7 @@
 
 var ACCELERATION = 15;
 var TURN_SPEED = Math.PI*2;
+var WRAP_MARGIN = 30;
 
 function Ship(x, y, dx, dy, angle, speed){
 	this.x = x;
@@ -29,6 +30,19 @@ Ship.prototype.update = function(delta, controller){
 
 	this.x += this.dx*delta / 1000;
 	this.y += this.dy*delta / 1000;
+
+	while(this.x > 800 + WRAP_MARGIN){
+		this.x -= 800 + WRAP_MARGIN;
+	}
+	while(this.x < 0 - WRAP_MARGIN){
+		this.x += 800 + WRAP_MARGIN;
+	}
+	while(this.y > 500 + WRAP_MARGIN){
+		this.y -= 500 + WRAP_MARGIN;
+	}
+	while(this.y < 0 - WRAP_MARGIN){
+		this.y += 500 + WRAP_MARGIN;
+	}
 };
 
 
