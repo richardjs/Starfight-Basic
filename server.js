@@ -64,7 +64,7 @@ function frame(){
 		socket.volatile.emit('state update', game)
 	});
 }
-setInterval(frame, 25);
+setInterval(frame, 10);
 
 
 http.listen(3000);
