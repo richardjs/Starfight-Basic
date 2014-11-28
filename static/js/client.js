@@ -103,8 +103,17 @@ Client.prototype.render = function(){
 			ship.x,
 			ship.y,
 			10,
-			0,
-			Math.PI*2
+			ship.angle,
+			ship.angle - Math.PI - Math.PI/10
+		);
+		this.ctx.fill();
+		this.ctx.beginPath();
+		this.ctx.arc(
+			ship.x,
+			ship.y,
+			10,
+			ship.angle - Math.PI + Math.PI/10,
+			ship.angle
 		);
 		this.ctx.fill();
 	}.bind(this));
