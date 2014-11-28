@@ -8,13 +8,20 @@ if(typeof require === 'function'){
 	var ship = window.ship;
 }
 
+
 function Game(){
-	this.ship = new ship.Ship(400, 400);
+	this.ships = [];
 }
+
 
 Game.prototype.update = function(delta){
+	this.ships.forEach(function(ship){
+		ship.update(delta);
+	});
 }
 
+
 exports.Game = Game;
+
 
 })(typeof exports === 'undefined' ? this['game'] = {} : exports);
