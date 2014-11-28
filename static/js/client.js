@@ -25,7 +25,14 @@ function Client(){
 		client.game.ships = [];
 		game.ships.forEach(function(serverShip){
 			client.game.ships.push(
-				new ship.Ship(serverShip.x, serverShip.y)
+				new ship.Ship(
+					serverShip.x,
+					serverShip.y,
+					serverShip.dx,
+					serverShip.dy,
+					serverShip.angle,
+					serverShip.speed
+				)
 			);
 		});
 		client.game.controllers = [];
