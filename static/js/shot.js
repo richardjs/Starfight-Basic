@@ -9,7 +9,8 @@ var SHOT_TTL = 1250;
 var WRAP_MARGIN = 30;
 
 
-function Shot(x, y, dx, dy, angle, ttl){
+function Shot(shipID, x, y, dx, dy, angle, ttl){
+	this.shipID = shipID;
 	this.x = x;
 	this.y = y;
 	if(angle){

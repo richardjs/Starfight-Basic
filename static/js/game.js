@@ -12,6 +12,7 @@ if(typeof require === 'function'){
 
 
 var FIRE_COOLDOWN = 150;
+var COLLISION_DISTANCE = 10;
 
 
 function Game(){
@@ -26,11 +27,16 @@ Game.prototype.update = function(delta){
 		var ship = this.ships[i];
 		ship.update(delta, this.controllers[i]);
 
+		if(ship.respawnTimer !== null){
+			continue;
+		}
+
 		if(this.controllers[i].firing){
 			if(ship.fireCooldown <= 0){
 				ship.fireCooldown = FIRE_COOLDOWN;
 				this.shots.push(
 					new shot.Shot(
+						ship.id,
 						ship.x,
 						ship.y,
 						ship.dx,
@@ -44,6 +50,18 @@ Game.prototype.update = function(delta){
 
 	this.shots.forEach(function(shot){
 		shot.update(delta);
+
+		this.ships.forEach(function(ship){
+			if(ship.id == shot.shipID){
+				return;
+			}
+			var distance = Math.sqrt(Math.pow(ship.x - shot.x, 2) + Math.pow(ship.y - shot.y, 2));
+			if(distance < COLLISION_DISTANCE){
+				ship.die();
+				this.shots.splice(this.shots.indexOf(shot), 1);
+			}
+		}.bind(this));
+
 		if(shot.ttl <= 0){
 			this.shots.splice(this.shots.indexOf(shot), 1);
 		}

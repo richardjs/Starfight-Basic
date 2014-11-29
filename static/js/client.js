@@ -30,13 +30,15 @@ function Client(){
 		game.ships.forEach(function(serverShip){
 			client.game.ships.push(
 				new ship.Ship(
+					serverShip.id,
 					serverShip.x,
 					serverShip.y,
 					serverShip.dx,
 					serverShip.dy,
 					serverShip.angle,
 					serverShip.speed,
-					serverShip.fireCooldown
+					serverShip.fireCooldown,
+					serverShip.respawnTimer
 				)
 			);
 		});
@@ -44,6 +46,7 @@ function Client(){
 		game.shots.forEach(function(serverShot){
 			client.game.shots.push(
 				new shot.Shot(
+					serverShot.shipID,
 					serverShot.x,
 					serverShot.y,
 					serverShot.dx,

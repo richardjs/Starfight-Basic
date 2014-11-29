@@ -12,6 +12,8 @@ app.use(express.static(__dirname + '/static'));
 var game = new Game();
 var sockets = [];
 
+var nextShipID = 0;
+
 // New connection
 io.on('connection', function(socket){
 	var address = socket.handshake.address;;
@@ -42,6 +44,7 @@ io.on('connection', function(socket){
 
 	game.ships.push(
 		new Ship(
+			nextShipID++,
 			Math.random() * 800,
 			Math.random() * 400
 		)
@@ -63,6 +66,14 @@ function frame(){
 	lastTime = time;
 
 	game.update(delta);
+	game.ships.forEach(function(ship){
+		if(ship.respawnTimer < 0){
+			ship.respawnTimer = null;
+			Math.random();
+			ship.x = Math.random() * 800;
+			ship.y = Math.random() * 400;
+		}
+	});
 
 	sockets.forEach(function(socket){
 		socket.volatile.emit('state update', game)

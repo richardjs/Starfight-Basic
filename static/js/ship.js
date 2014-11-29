@@ -8,7 +8,10 @@ var TURN_SPEED = Math.PI*2;
 
 var WRAP_MARGIN = 30;
 
-function Ship(x, y, dx, dy, angle, speed, fireCooldown){
+var RESPAWN_DELAY = 1500;
+
+function Ship(id, x, y, dx, dy, angle, speed, fireCooldown, respawnTimer){
+	this.id = id;
 	this.x = x;
 	this.y = y;
 	this.dx = dx || 0;
@@ -16,10 +19,16 @@ function Ship(x, y, dx, dy, angle, speed, fireCooldown){
 	this.angle = angle || Math.random() * Math.PI*2;
 	this.speed = speed || 0;
 	this.fireCooldown = fireCooldown || 0;
+	this.respawnTimer = respawnTimer || null;
 }
 
 
 Ship.prototype.update = function(delta, controller){
+	if(this.respawnTimer !== null){
+		this.respawnTimer -= delta;
+		return;
+	}
+
 	if(controller.turnLeft){
 		this.angle -= TURN_SPEED*delta / 1000;
 	}
@@ -61,7 +70,18 @@ Ship.prototype.update = function(delta, controller){
 	if(this.fireCooldown > 0){
 		this.fireCooldown -= delta;
 	}
+
 };
+
+
+Ship.prototype.die = function(){
+	this.x = -1000;
+	this.y = -1000;
+	this.dx = 0;
+	this.dy = 0;
+
+	this.respawnTimer = RESPAWN_DELAY;
+}
 
 
 exports.Ship = Ship;
