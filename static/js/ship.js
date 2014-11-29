@@ -2,7 +2,7 @@
 
 (function(exports){
 
-var ACCELERATION = 5;
+var ACCELERATION = 7;
 var MAX_SPEED = 500;
 var TURN_SPEED = Math.PI*2;
 
