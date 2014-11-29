@@ -4,8 +4,12 @@
 
 if(typeof require === 'function'){
 	var game = require('./game.js');
+	var ship = require('./ship.js');
+	var shot = require('./shot.js');
 }else{
 	var game = window.game;
+	var ship = window.ship;
+	var shot = window.shot;
 }
 
 
@@ -31,7 +35,21 @@ function Client(){
 					serverShip.dx,
 					serverShip.dy,
 					serverShip.angle,
-					serverShip.speed
+					serverShip.speed,
+					serverShip.fireCooldown
+				)
+			);
+		});
+		client.game.shots = [];
+		game.shots.forEach(function(serverShot){
+			client.game.shots.push(
+				new shot.Shot(
+					serverShot.x,
+					serverShot.y,
+					serverShot.dx,
+					serverShot.dy,
+					null,
+					serverShot.ttl
 				)
 			);
 		});
@@ -47,13 +65,15 @@ function Client(){
 		switch(event.keyCode){
 			case 38:
 				client.game.controllers[client.id]['accelerate'] = true;
-				console.log(client.game.controllers[client.id]);
 				break;
 			case 37:
 				client.game.controllers[client.id]['turnLeft'] = true;
 				break;
 			case 39:
 				client.game.controllers[client.id]['turnRight'] = true;
+				break;
+			case 32:
+				client.game.controllers[client.id]['firing'] = true;
 				break;
 			default:
 				return;
@@ -70,6 +90,9 @@ function Client(){
 				break;
 			case 39:
 				client.game.controllers[client.id]['turnRight'] = false;
+				break;
+			case 32:
+				client.game.controllers[client.id]['firing'] = false;
 				break;
 			default:
 				return;
@@ -121,6 +144,20 @@ Client.prototype.render = function(){
 			10,
 			ship.angle - Math.PI + Math.PI/10,
 			ship.angle
+		);
+		this.ctx.fill();
+	}.bind(this));
+
+	// Draw shots
+	this.game.shots.forEach(function(shot){
+		this.ctx.fillStyle = '#a33';
+		this.ctx.beginPath();
+		this.ctx.arc(
+			shot.x,
+			shot.y,
+			3,
+			0,
+			Math.PI*2
 		);
 		this.ctx.fill();
 	}.bind(this));

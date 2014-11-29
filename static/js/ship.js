@@ -5,15 +5,17 @@
 var ACCELERATION = 5;
 var MAX_SPEED = 500;
 var TURN_SPEED = Math.PI*2;
+
 var WRAP_MARGIN = 30;
 
-function Ship(x, y, dx, dy, angle, speed){
+function Ship(x, y, dx, dy, angle, speed, fireCooldown){
 	this.x = x;
 	this.y = y;
 	this.dx = dx || 0;
 	this.dy = dy || 0;
 	this.angle = angle || Math.random() * Math.PI*2;
 	this.speed = speed || 0;
+	this.fireCooldown = fireCooldown || 0;
 }
 
 
@@ -54,6 +56,10 @@ Ship.prototype.update = function(delta, controller){
 	}
 	while(this.y < 0 - WRAP_MARGIN){
 		this.y += 500 + WRAP_MARGIN;
+	}
+
+	if(this.fireCooldown > 0){
+		this.fireCooldown -= delta;
 	}
 };
 
