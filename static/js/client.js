@@ -126,8 +126,13 @@ Client.prototype.render = function(){
 	this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
 	// Draw ships
-	this.game.ships.forEach(function(ship){
-		this.ctx.fillStyle = '#9a9';
+	for(var i = 0; i < this.game.ships.length; i++){
+		var ship = this.game.ships[i];
+		if(i == this.id){
+			this.ctx.fillStyle = '#7c7';
+		}else{
+			this.ctx.fillStyle = '#9a9';
+		}
 		this.ctx.beginPath()
 		this.ctx.arc(
 			ship.x,
@@ -146,7 +151,7 @@ Client.prototype.render = function(){
 			ship.angle
 		);
 		this.ctx.fill();
-	}.bind(this));
+	}
 
 	// Draw shots
 	this.game.shots.forEach(function(shot){
