@@ -6,6 +6,8 @@
 var SHOT_SPEED = 200;
 var SHOT_TTL = 1250;
 
+var WRAP_MARGIN = 30;
+
 
 function Shot(x, y, dx, dy, angle, ttl){
 	this.x = x;
@@ -24,6 +26,19 @@ function Shot(x, y, dx, dy, angle, ttl){
 Shot.prototype.update = function(delta){
 	this.x += this.dx*delta / 1000;
 	this.y += this.dy*delta / 1000;
+
+	while(this.x > 800 + WRAP_MARGIN){
+		this.x -= 800 + WRAP_MARGIN;
+	}
+	while(this.x < 0 - WRAP_MARGIN){
+		this.x += 800 + WRAP_MARGIN;
+	}
+	while(this.y > 500 + WRAP_MARGIN){
+		this.y -= 500 + WRAP_MARGIN;
+	}
+	while(this.y < 0 - WRAP_MARGIN){
+		this.y += 500 + WRAP_MARGIN;
+	}
 
 	this.ttl -= delta;
 };
