@@ -17,8 +17,7 @@ io.on('connection', function(socket){
 	var address = socket.handshake.address;;
 	console.log('connection from ' + address);
 	
-	var id = sockets.length;
-	socket.emit('set id', id);
+	socket.emit('set id', sockets.length);
 	sockets.push(socket);
 
 	socket.on('disconnect', function(){
@@ -28,9 +27,14 @@ io.on('connection', function(socket){
 		sockets.splice(id, 1)
 		game.ships.splice(id, 1);
 		game.controllers.splice(id, 1);
+
+		for(var i = 0; i < sockets.length; i++){
+			sockets[i].emit('set id', i);
+		}
 	});
 
 	socket.on('controller update', function(controller){
+		var id = sockets.indexOf(socket);
 		game.controllers[id] = controller;
 	});
 
