@@ -17,6 +17,7 @@ function Client(){
 	var client = this;
 	this.game = new game.Game();
 	this.socket = io();
+	this.timeDelta;
 
 	this.canvas = document.getElementById('canvas');
 	this.ctx = this.canvas.getContext('2d');
@@ -26,6 +27,10 @@ function Client(){
 	});
 
 	this.socket.on('state update', function(game){
+		if(client.timeDelta === undefined){
+			client.timeDelta = new Date().getTime() - game.currentTime - game.startTime;
+		}
+
 		client.game.ships = [];
 		game.ships.forEach(function(serverShip){
 			client.game.ships.push(
@@ -56,12 +61,16 @@ function Client(){
 				)
 			);
 		});
+		var ourController = client.game.controllers[client.id];
 		client.game.controllers = [];
 		game.controllers.forEach(function(serverController){
 			client.game.controllers.push(
 				serverController
 			);
 		});
+		if(ourController){
+			client.game.controllers[client.id] = ourController;
+		}
 	});
 
 	document.addEventListener('keydown', function(event){

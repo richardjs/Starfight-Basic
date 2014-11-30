@@ -40,8 +40,6 @@ io.on('connection', function(socket){
 		game.controllers[id] = controller;
 	});
 
-	// TODO: need to account for sockets disconnecting
-
 	game.ships.push(
 		new Ship(
 			nextShipID++,
@@ -56,6 +54,7 @@ io.on('connection', function(socket){
 // Game loop
 var lastTime = 0;
 var x = 0;
+game.startTime = new Date().getTime();
 function frame(){
 	var time = new Date().getTime();
 	if(lastTime){
@@ -65,6 +64,7 @@ function frame(){
 	}
 	lastTime = time;
 
+	game.currentTime = time;
 	game.update(delta);
 	game.ships.forEach(function(ship){
 		if(ship.respawnTimer < 0){
